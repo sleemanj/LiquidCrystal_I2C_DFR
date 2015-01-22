@@ -11,10 +11,12 @@ assign different expander pins to the LCD.
 Wiring
 ------
 
-* SCL     ->     SCL (A5, Use Pin 21 on the Arduino Mega)
-* SDA     ->     SDA (A4, Use Pin 20 on the Arduino Mega)
+* SCL     ->     SCL (Uno: A5, Mega: 21, Leo*: SCL)
+* SDA     ->     SDA (Uno: A4, Mega: 20, Leo*: SDA)
 * VCC     ->     5v
 * GND     ->     GND
+
+*Arduino Leonardo users should read this thread:  http://forum.arduino.cc/index.php?topic=113431.0
 
 Download, Install and Example
 -----------------------------
