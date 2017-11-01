@@ -30,8 +30,11 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C_DFR.h>
 
-// Create a new LCD on default I2C address (0x27)
-LiquidCrystal_I2C_DFR lcd(0x27);  
+// Create a new LCD on auto-scanned I2C Address
+// If you need to specify the address directly, you can use
+//   LiquidCrystal_I2C_DFR lcd(0x27);
+// where the address is 0x27 for example
+LiquidCrystal_I2C_DFR lcd(0);  
 
 void setup()
 {  

@@ -22,7 +22,7 @@ Download, Install and Example
 -----------------------------
 
 * Download: http://sparks.gogo.co.nz/LiquidCrystal_I2C_DFR.zip
-* Open the Arduino IDE (1.0.5)
+* Open the Arduino IDE (1.6.13+)
 * Select the menu item Sketch > Import Library > Add Library
 * Choose to install the LiquidCrystal_I2C_DFR.zip file you downloaded
 * Now you can choose File > Examples > LiquidCrystal_I2C_DFR > Hello World
@@ -37,15 +37,29 @@ http://arduino.cc/en/Reference/LiquidCrystal
 
 I2C Address
 -----------
-There are three jumper/pads on these types of boards marked A0, 
-A1 and A2.  These jumpers are pulled high, if you solder across 
-the two pads of a jumper it will "close" the jumper.
 
-With these jumpers open the address is 0x27, this is the default
-setting.
+
+This library has an auto-scanning ability for the I2C address, simply
+create your display like this (see the examples)...
+
+    LiquidCrystal_I2C_DFR lcd(0);
+
+and the address will be found automatically, as long as you only have 
+one I2C device on the bus in those ranges.  
+
+The Hello World example will print the found I2C address on the display
+itself so you that's a quick way to find it if you need to set it directly.
+
+Most of the boards use either 0x27 or 0x3F  as the default I2C
+address, that is none of the 3 address pins on the IC are grounded.
+
+The 0x27/0x3F difference is between the main chip on the board being
+either the PCF8574 or the PCF8574A
 
 If you do need to set a different address to use for the
 backpack, close (ground) these jumpers on the I2C backpack...
+
+**PCF8574**
 
 | Adr      | A0  |  A1  | A2  |
 | -------- | --- |  --- | --- |
@@ -57,6 +71,19 @@ backpack, close (ground) these jumpers on the I2C backpack...
 | 0x22     | X   |      |  X  |
 | 0x21     | X   |   X  |     |
 | 0x20     | X   |   X  |  X  |
+
+**PCF8574A**
+
+| Adr      | A0  |  A1  | A2  |
+| -------- | --- |  --- | --- |
+| 0x3F     |     |      |     |
+| 0x3E     |     |      |  X  |
+| 0x3D     |     |   X  |     |
+| 0x3C     |     |   X  |  X  |
+| 0x3B     | X   |      |     |
+| 0x3A     | X   |      |  X  |
+| 0x39     | X   |   X  |     |
+| 0x38     | X   |   X  |  X  |
 
 
 History/Lineage/See Also

@@ -28,11 +28,25 @@
   
  I2C Address
  -----------
- Most of the boards use 0x27 as the default I2C address, that is
- none of the 3 address pins on the IC are grounded.
+ 
+ This library has an auto-scanning ability for the I2C address, simply
+ do
+   
+   LiquidCrystal_I2C_DFR lcd(0);
+ 
+ and the address will be found automatically, as long as you only have 
+ one I2C device on the bus in those ranges.
+ 
+ Most of the boards use either 0x27 or 0x3F  as the default I2C
+ address, that is none of the 3 address pins on the IC are grounded.
+ 
+ The 0x27/0x3F difference is between the PCF8574 and the PCF8574A 
+ variants which have different address spaces.
  
  If you do need to set a different address to use for the
  backpack, close (ground) these jumpers on the I2C backpack...
+ 
+  PCF8574 
  
  | Adr      | A0  |  A1  | A2  |
  | -------- | --- |  --- | --- |
@@ -45,9 +59,20 @@
  | 0x21     | X   |   X  |     |
  | 0x20     | X   |   X  |  X  |
  
-(notice this is just inverted binary for the last digit :-)).
-
+ PCF8574A
  
+ | Adr      | A0  |  A1  | A2  |
+ | -------- | --- |  --- | --- |
+ | 0x3F     |     |      |     |
+ | 0x3E     |     |      |  X  |
+ | 0x3D     |     |   X  |     |
+ | 0x3C     |     |   X  |  X  |
+ | 0x3B     | X   |      |     |
+ | 0x3A     | X   |      |  X  |
+ | 0x39     | X   |   X  |     |
+ | 0x38     | X   |   X  |  X  |
+ 
+
 History/Lineage/See Also
 ------------------------
 
@@ -91,7 +116,6 @@ inline void LiquidCrystal_I2C_DFR::write(uint8_t value) {
 #include "Wire.h"
 
 
-
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -119,6 +143,35 @@ LiquidCrystal_I2C_DFR::LiquidCrystal_I2C_DFR(uint8_t lcd_Addr)
 
 void LiquidCrystal_I2C_DFR::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   Wire.begin();
+  
+  // We have to do this after Wire.begin
+  uint8_t scanAddress = 0x20;
+  while(_Addr == 0 )
+  {
+    Wire.beginTransmission(scanAddress);
+    if(Wire.endTransmission() == 0)
+    {
+      _Addr = scanAddress;
+      break;
+    }
+    
+    if(scanAddress == 0x27) 
+    {
+      // Have scanned all of the first range, try the next range
+      scanAddress = 0x38;
+    }
+    else if(scanAddress == 0x3F) 
+    {
+      // Have scanned both ranges, not found
+      break;
+    }
+    else
+    {
+      // Try next address in the range
+      scanAddress++;
+    }
+  }
+    
   _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   _cols = cols;
   _rows = lines;

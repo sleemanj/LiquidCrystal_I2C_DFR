@@ -76,9 +76,10 @@
 #define Rs B00000001  // Register select bit
 
 class LiquidCrystal_I2C_DFR : public Print {
-public:
-  LiquidCrystal_I2C_DFR(uint8_t lcd_Addr = 0x27);
+public:    
+  LiquidCrystal_I2C_DFR(uint8_t lcd_Addr = 0);
   void begin(uint8_t cols = 16, uint8_t rows = 2, uint8_t charsize = LCD_5x8DOTS );
+  uint8_t getAddress() { return _Addr; }
   void clear();
   void home();
   void noDisplay();
@@ -135,6 +136,7 @@ private:
   void write4bits(uint8_t);
   void expanderWrite(uint8_t);
   void pulseEnable(uint8_t);
+
   uint8_t _Addr;
   uint8_t _displayfunction;
   uint8_t _displaycontrol;
