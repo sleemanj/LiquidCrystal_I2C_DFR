@@ -21,7 +21,7 @@ Wiring
 Download, Install and Example
 -----------------------------
 
-* Download: http://sparks.gogo.co.nz/LiquidCrystal_I2C_DFR.zip
+* Download: https://sparks.gogo.co.nz/LiquidCrystal_I2C_DFR.zip
 * Open the Arduino IDE (1.6.13+)
 * Select the menu item Sketch > Import Library > Add Library
 * Choose to install the LiquidCrystal_I2C_DFR.zip file you downloaded
